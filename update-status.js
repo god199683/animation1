@@ -1,0 +1,3 @@
+const CURRENT_VERSION='1.1.0';
+async function checkForUpdates(){const label=document.querySelector('#updateState');try{const response=await fetch('https://api.github.com/repos/god199683/animation1/releases/latest');if(response.status===404){label.textContent='최신 버전';return}if(!response.ok)throw Error();const release=await response.json(),version=(release.tag_name||'').replace(/^v/,'');if(version&&version!==CURRENT_VERSION){label.textContent=`새 버전 ${release.tag_name} 있음 — 클릭하여 받기`;label.style.cursor='pointer';label.style.color='#416bb7';label.onclick=()=>window.desktop.open(release.html_url)}else label.textContent='최신 버전'}catch{label.textContent='업데이트 확인 실패'}}
+checkForUpdates();
