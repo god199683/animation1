@@ -1,6 +1,6 @@
 {
   "name": "three-fox-veo-studio",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Three Foxes VEO 3.1 Lite prompt studio",
   "main": "main.js",
   "scripts": {
