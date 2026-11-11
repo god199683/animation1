@@ -1,0 +1,27 @@
+{
+  "name": "three-fox-veo-studio",
+  "version": "1.0.0",
+  "description": "Three Foxes VEO 3.1 Lite prompt studio",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "37.2.6",
+    "electron-builder": "^24.13.3",
+    "typescript": "^5.9.2"
+  },
+  "build": {
+    "appId": "com.god199683.threefoxveostudio",
+    "productName": "세 여우 VEO 스튜디오",
+    "asar": true,
+    "files": [
+      "**/*",
+      "!dist/**"
+    ],
+    "win": {
+      "target": "portable"
+    }
+  }
+}
