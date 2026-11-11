@@ -2,7 +2,8 @@ const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
-const dataFile = () => path.join(app.getPath('userData'), 'archive.json');
+// User-requested shared local project folder: keep the archive beside the app project.
+const dataFile = () => 'F:\\애니메이션1\\archive.json';
 function readArchive() { try { return JSON.parse(fs.readFileSync(dataFile(), 'utf8')); } catch { return []; } }
 function writeArchive(items) { fs.writeFileSync(dataFile(), JSON.stringify(items, null, 2), 'utf8'); }
 function createWindow() {
