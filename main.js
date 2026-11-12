@@ -15,6 +15,6 @@ function createWindow() {
 app.whenReady().then(() => { createWindow(); app.on('activate', () => { if (!BrowserWindow.getAllWindows().length) createWindow(); }); });
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
 ipcMain.handle('archive:list', (_, userId) => archiveFor(userId));
-ipcMain.handle('archive:save', (_, userId, item) => { const all = archiveFor(userId); if (!all.some(x => x.category === item.category)) { all.unshift(item); writeArchive(userId, all); } return all; });
+ipcMain.handle('archive:save', (_, userId, item) => { const all = archiveFor(userId); const index = all.findIndex(x => x.category === item.category); if (index >= 0) all[index] = item; else all.unshift(item); writeArchive(userId, all); return all; });
 ipcMain.handle('archive:remove', (_, userId, category) => { const all = archiveFor(userId).filter(x => x.category !== category); writeArchive(userId, all); return all; });
 ipcMain.handle('shell:open', (_, target) => shell.openExternal(target));
