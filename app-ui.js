@@ -32,6 +32,7 @@ async function archives(skipSync){
 }
 async function auth(mode){try{const id=A('#loginId').value.trim(),password=A('#loginPassword').value;if(!/^[a-zA-Z0-9_]{3,32}$/.test(id)||password.length<6)throw Error('아이디 3자 이상, 비밀번호 6자 이상 입력하세요.');const email=id.toLowerCase()+'@three-fox.local',path=mode==='signup'?'/auth/v1/signup':'/auth/v1/token?grant_type=password',body=mode==='signup'?{email,password,data:{display_id:id}}:{email,password},r=await fetch(URL+path,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify(body)}),d=await r.json(),s=d.session||d;if(!r.ok||!s.access_token)throw Error(d.message||'로그인에 실패했습니다.');localStorage.setItem('sb_session',JSON.stringify(s));A('#accountDialog').close();A('#accountBtn').textContent=id+' · 로그인됨';items=await window.desktop.listArchive(user());A('#archiveCount').textContent=items.length;await sync()}catch(e){A('#authMessage').textContent=e.message}}
 function openAccount(){const logged=!!session()?.access_token,dialog=A('#accountDialog'),intro=dialog.querySelector('p'),labels=dialog.querySelectorAll('label'),actions=dialog.querySelector('.auth-actions');intro.textContent=logged?'자동 로그인 상태입니다. 이 계정의 보관함만 동기화합니다.': '아이디와 비밀번호로 계정을 관리합니다.';labels.forEach(x=>x.style.display=logged?'none':'');actions.style.display=logged?'none':'';A('#authMessage').textContent=logged?'로그인 유지 중':'';dialog.showModal()}
+async function manualSync(){const button=A('#syncBtn');button.disabled=true;button.textContent='동기화 중…';status('Supabase 동기화 중…');const ok=await sync();button.disabled=false;button.textContent='지금 동기화';if(ok){items=await window.desktop.listArchive(user());A('#archiveCount').textContent=items.length;status('Supabase 동기화 완료')}else if(!session()?.access_token){status('동기화하려면 로그인하세요')}}
 A('#regenerate').onclick=regen;
 A('#newPlan').onclick=newPlan;
 A('#archiveBtn').onclick=archives;
@@ -40,7 +41,7 @@ A('#accountBtn').onclick=openAccount;
 A('.account-close').onclick=()=>A('#accountDialog').close();
 A('#signIn').onclick=()=>auth('signin');
 A('#signUp').onclick=()=>auth('signup');
-A('#syncBtn').onclick=sync;
+A('#syncBtn').onclick=manualSync;
 A('#flowLink').onclick=()=>window.desktop.open('https://labs.google/fx/ko/tools/flow');
 status('준비됨');
 window.desktop.listArchive(user()).then(x=>{items=x;A('#archiveCount').textContent=x.length;newPlan();sync()}).catch(newPlan);
