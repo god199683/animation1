@@ -18,7 +18,7 @@ function session(){try{return JSON.parse(localStorage.getItem('sb_session')||'nu
 function make(cat,premise,avoid){
   const options=takes.filter(x=>x.name!==avoid),take=options[Math.floor(Math.random()*options.length)];
   return {category:cat,basePremise:premise,premise,direction:take.name,createdAt:new Date().toISOString(),clips:(storyboards[cat]||beats).map((scene,i)=>{
-    const continuity=i===0?'입력: 원본 이미지를 시작 프레임과 Characters/Ingredients 재료로 사용한다.':'연결: 바로 앞 클립을 Video Extension으로 연장한다. 불가할 때만 마지막 프레임을 시작 프레임으로 쓰고 동일 Characters/Ingredients 재료를 고정한다.';
+    const continuity=i===0?'입력: 원본 이미지를 시작 프레임과 Characters/Ingredients 재료로 사용한다.':'클립 연결·캐릭터 검수(필수): 바로 앞 클립의 마지막 프레임을 기준 이미지로 사용한다. 다음 클립의 첫 0.5초는 그 마지막 프레임의 세 여우와 얼굴·눈·귀·주둥이·몸 비율·털색·장식·꼬리 수·꼬리 배치·네 발 자세가 완전히 동일해야 한다. 다르면 생성 결과를 사용하지 않는다. 바로 앞 클립을 Video Extension으로 연장하고, 동일 Characters/Ingredients 원본 캐릭터 재료를 반드시 고정 선택한다. 새 캐릭터 재해석·외형 변화·복제·소실·변신 금지. Video Extension을 쓸 수 없을 때만 마지막 프레임을 Frames to Video 시작 프레임으로 사용한다.';
     const prompt=`Google Flow · Veo 3.1 Lite · 세로 9:16 · ${i===7?8:7}초.\n\n[이 클립에서 반드시 일어날 스토리보드 사건]\n카테고리: ${cat}\n${scene}\n세 여우가 이 행동을 화면에서 명확히 끝까지 수행한다. 다른 사건으로 바꾸거나 생략하지 않는다.\n\n[연출]\n${take.name}. 장면의 행동이 가장 잘 보이도록 안정적인 중간 거리 카메라를 사용한다.\n\n[연속성]\n${continuity}\n\n[외형 고정]\n${fixed}\n\n[사운드]\n대사·나레이션·사람 말·자막·화면 텍스트 없음. 막내는 밝고 높은 울음소리, 첫째는 낮고 우아한 울음소리, 둘째는 부드럽고 얌전한 울음소리. 배경음악·자연 효과음·여우 울음소리만 사용. 로고·워터마크 없음.`;
     return {title:['설정','발견','협동','소동','마음','해결','클라이맥스','엔딩'][i],scene,prompt};
   })};
